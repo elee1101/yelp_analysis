@@ -1,0 +1,12 @@
+# Ignore data files
+data/
+*.csv
+*.json
+*.tar
+*.zip
+
+# Ignore documents
+*.pdf
+
+# Ignore environment
+.env
