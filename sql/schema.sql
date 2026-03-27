@@ -1,3 +1,7 @@
+DROP Table users
+DROP Table businesses
+DROP Table reviews
+
 -- USERS TABLE
 CREATE TABLE users (
     user_id TEXT PRIMARY KEY,
@@ -30,18 +34,11 @@ CREATE TABLE reviews (
     user_id TEXT,
     business_id TEXT,
     stars FLOAT,
-    date DATE,
-    text TEXT,
     useful INT,
     funny INT,
     cool INT,
+    date DATE,
 
     FOREIGN KEY (user_id) REFERENCES users(user_id),
     FOREIGN KEY (business_id) REFERENCES businesses(business_id)
 );
-
-SELECT * FROM users
-
-SELECT * FROM businesses
-
-SELECT * FROM reviews

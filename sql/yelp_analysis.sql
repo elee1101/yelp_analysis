@@ -15,7 +15,7 @@ ORDER BY stars DESC, review_count DESC
 LIMIT 10;
 
 -- Most Reviewed Business
--- Luke 4554
+-- Acme Oyster House: 7568 reviews
 SELECT name, review_count
 FROM businesses 
 WHERE review_count = (
@@ -23,7 +23,7 @@ WHERE review_count = (
 );
 
 -- Most Active User
--- Bruce: 16567
+-- Fox: 17473 reviews
 SELECT name, review_count 
 FROM users 
 WHERE review_count = (
@@ -37,7 +37,7 @@ GROUP BY city
 ORDER BY avg_rating DESC;
 
 -- Review Rating Distribution
--- 5: 22220, 4: 12721, 3: 2677, 2: 1003, 1: 5379
+-- 5: 46145, 4: 20724, 3: 9904, 2: 7770, 1: 15457
 SELECT stars, COUNT(*) AS count 
 FROM reviews 
 GROUP BY stars 
@@ -50,7 +50,7 @@ GROUP BY city
 ORDER BY count DESC;
 
 -- User engagement (Reviews per User)
--- 82.35
+-- 73.07
 SELECT AVG(review_count) AS avg_reviews_per_user
 FROM users;
 
@@ -63,7 +63,7 @@ JOIN businesses AS b ON r.business_id = b.business_id
 LIMIT 10;
 
 -- Business Popularity Based on Review Count (Derived from Reviews table)
--- LUKE 503
+-- Oceana Grill: 122 reviews
 SELECT b.name AS business_name, COUNT(*) AS count
 FROM businesses AS b
 JOIN reviews AS r ON b.business_id = r.business_id
@@ -79,7 +79,7 @@ ORDER BY avg_review_rating DESC
 ;
 
 -- High-Quality Businesses (High Rating + High Review Volume)
--- Blues City Deli 4.87 stars, 90 reviews
+-- Reading Terminal Market: 4.66 stars, 82 reviews
 SELECT b.name AS business_name, AVG(r.stars) AS avg_review_rating, COUNT(*) AS count
 FROM businesses AS b
 JOIN reviews AS r ON b.business_id = r.business_id
@@ -89,28 +89,28 @@ ORDER BY avg_review_rating DESC, count DESC
 ;
 
 -- User Rating Behavior
--- more reviews avg: 3.78
+-- more reviews avg: 3.84
 SELECT AVG(avg_review_rating)
 FROM (
 	SELECT user_id, AVG(stars) AS avg_review_rating, COUNT(*) AS count
 	FROM reviews
 	GROUP BY user_id
 	ORDER BY count DESC
-	LIMIT 100
+	LIMIT 1000
 )t;
 
--- more reviews avg: 4.03
+-- less reviews avg: 3.65
 SELECT AVG(avg_review_rating)
 FROM (
 	SELECT user_id, AVG(stars) AS avg_review_rating, COUNT(*) AS count
 	FROM reviews
 	GROUP BY user_id
 	ORDER BY count
-	LIMIT 100
+	LIMIT 1000
 )t;
 
 -- Business Rating Consistency (Stored vs Actual Review Average)
--- different: 4829, similar: 3197
+-- different: 22439, similar: 23626
 SELECT diff, COUNT(*)
 FROM (
 	SELECT b.name AS business_name, 
@@ -138,6 +138,7 @@ ORDER BY open_ratio DESC
 ;
 
 -- Business Ranking and Performance Relative to City Average
+-- above city average: 24914 | below city average: 20737 | equal to city average: 414
 SELECT performance_vs_city, COUNT(*) AS count
 FROM (
 	SELECT name, city, review_count, stars,
